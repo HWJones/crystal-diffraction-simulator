@@ -2,6 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 
+interface Point3D {
+  x: number;
+  y: number;
+  z: number;
+}
+
+interface TransformedPoint extends Point3D {
+  scale: number;
+}
+
 const Button = ({ 
   onClick, 
   children, 
@@ -56,24 +66,24 @@ const CrystalDiffraction = () => {
   const reciprocalScale = 2;
 
   useEffect(() => {
-  let animationFrame: number | undefined;
-  if (isAnimating) {
-    const animate = () => {
-      setRotationZ(prev => (prev + 0.5) % 360);
+    let animationFrame: number | undefined;
+    if (isAnimating) {
+      const animate = () => {
+        setRotationZ(prev => (prev + 0.5) % 360);
+        animationFrame = requestAnimationFrame(animate);
+      };
       animationFrame = requestAnimationFrame(animate);
-    };
-    animationFrame = requestAnimationFrame(animate);
-  }
-  return () => {
-    if (animationFrame) {
-      cancelAnimationFrame(animationFrame);
     }
-  };
-}, [isAnimating]);
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [isAnimating]);
 
   // Generate 3D crystal lattice points
-  const generateLatticePoints = () => {
-    const points = [];
+  const generateLatticePoints = (): Point3D[] => {
+    const points: Point3D[] = [];
     const gridSize = 2;
     for (let i = -gridSize; i <= gridSize; i++) {
       for (let j = -gridSize; j <= gridSize; j++) {
@@ -90,8 +100,8 @@ const CrystalDiffraction = () => {
   };
 
   // Generate 3D reciprocal lattice points
-  const generateReciprocalPoints = () => {
-    const points = [];
+  const generateReciprocalPoints = (): Point3D[] => {
+    const points: Point3D[] = [];
     const gridSize = 2;
     const reciprocalSpacing = (200 / latticeSpacing) * reciprocalScale;
     for (let i = -gridSize; i <= gridSize; i++) {
@@ -109,7 +119,7 @@ const CrystalDiffraction = () => {
   };
 
   // 3D transformation matrix multiplication
-  const transform3D = (point) => {
+  const transform3D = (point: Point3D): TransformedPoint => {
     const radX = rotationX * Math.PI / 180;
     const radY = rotationY * Math.PI / 180;
     const radZ = rotationZ * Math.PI / 180;
@@ -143,8 +153,8 @@ const CrystalDiffraction = () => {
     };
   };
 
-  const calculateConnections = (points) => {
-    const connections = [];
+  const calculateConnections = (points: Point3D[]) => {
+    const connections: [Point3D, Point3D][] = [];
     const threshold = latticeSpacing * 1.1;
     
     for (let i = 0; i < points.length; i++) {
@@ -165,7 +175,7 @@ const CrystalDiffraction = () => {
     return connections;
   };
 
-  const renderLattice = (points, connections, color, lineColor, isReciprocal = false) => {
+  const renderLattice = (points: Point3D[], connections: [Point3D, Point3D][], color: string, lineColor: string, isReciprocal = false) => {
     const transformedPoints = points.map(p => ({
       ...p,
       ...transform3D(p)
