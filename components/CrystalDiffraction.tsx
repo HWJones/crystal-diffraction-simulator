@@ -2,7 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 
-const Button = ({ onClick, children, className = "" }) => (
+const Button = ({ 
+  onClick, 
+  children, 
+  className = "" 
+}: { 
+  onClick: () => void;
+  children: React.ReactNode;
+  className?: string;
+}) => (
   <button 
     onClick={onClick}
     className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${className}`}
@@ -11,7 +19,19 @@ const Button = ({ onClick, children, className = "" }) => (
   </button>
 );
 
-const Slider = ({ label, value, onChange, min, max }) => (
+const Slider = ({ 
+  label, 
+  value, 
+  onChange, 
+  min, 
+  max 
+}: {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  min: number;
+  max: number;
+}) => (
   <div className="mb-4">
     <label className="block mb-2">{label}</label>
     <input
