@@ -1,3 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-module.exports = nextConfig
+const nextConfig = {
+  output: 'export',
+  basePath: '/crystal-diffraction-simulator',
+  images: {
+    unoptimized: true,
+  },
+};
+
+module.exports = nextConfig;
