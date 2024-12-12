@@ -1,3 +1,11 @@
+import './globals.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Crystal Diffraction Simulator',
+  description: 'Interactive 3D visualization of crystal structures and diffraction patterns',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <main>
+          {children}
+        </main>
+      </body>
     </html>
   )
 }
