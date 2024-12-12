@@ -56,16 +56,20 @@ const CrystalDiffraction = () => {
   const reciprocalScale = 2;
 
   useEffect(() => {
-    let animationFrame;
-    if (isAnimating) {
-      const animate = () => {
-        setRotationZ(prev => (prev + 0.5) % 360);
-        animationFrame = requestAnimationFrame(animate);
-      };
+  let animationFrame: number | undefined;
+  if (isAnimating) {
+    const animate = () => {
+      setRotationZ(prev => (prev + 0.5) % 360);
       animationFrame = requestAnimationFrame(animate);
+    };
+    animationFrame = requestAnimationFrame(animate);
+  }
+  return () => {
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
     }
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isAnimating]);
+  };
+}, [isAnimating]);
 
   // Generate 3D crystal lattice points
   const generateLatticePoints = () => {
